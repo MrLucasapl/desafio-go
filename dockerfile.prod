@@ -1,0 +1,17 @@
+FROM golang:latest AS build
+
+WORKDIR /go/src
+
+COPY go.mod main.go /go/src
+
+RUN go mod download
+
+COPY main.go /src
+
+RUN go build
+
+FROM alpine
+
+COPY --from=build /go/src/docker-go /
+
+CMD ["./docker-go"]
