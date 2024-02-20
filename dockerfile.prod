@@ -4,13 +4,13 @@ WORKDIR /go/src
 
 COPY go.mod main.go /go/src
 
-RUN go mod download
+RUN CGO_ENABLED=0 go mod download
 
 COPY main.go /src
 
 RUN go build
 
-FROM alpine
+FROM scratch
 
 COPY --from=build /go/src/docker-go /
 
